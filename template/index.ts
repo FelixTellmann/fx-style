@@ -6,9 +6,9 @@ const trailing = 'Semicolon'
 
 			const why={am:'I tabbed?'};
 
-const iWish = "I didn't have a trailing space..."; 
+const iWish = "I didn't have a trailing space...";
 
-const sicilian = true;;
+const sicilian = true;
 
 const vizzini = (!!sicilian) ? !!!sicilian : sicilian;
 

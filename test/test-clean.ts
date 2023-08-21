@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-import * as assert from 'assert';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as assert from "assert";
+import * as fs from "fs";
+import * as path from "path";
 
-import {clean} from '../src/clean';
-import {nop} from '../src/util';
+import { clean } from "../src/clean";
+import { nop } from "../src/util";
 
-import {withFixtures} from 'inline-fixtures';
-import {describe, it} from 'mocha';
+import { withFixtures } from "inline-fixtures";
+import { describe, it } from "mocha";
 
-describe('clean', () => {
+describe("clean", () => {
   const OPTIONS = {
-    gtsRootDir: path.resolve(__dirname, '../..'),
-    targetRootDir: './',
+    gtsRootDir: path.resolve(__dirname, "../.."),
+    targetRootDir: "./",
     dryRun: false,
     yes: false,
     no: false,
-    logger: {log: nop, error: nop, dir: nop},
+    logger: { log: nop, error: nop, dir: nop },
   };
 
-  it('should gracefully error if tsconfig is missing', () => {
+  it("should gracefully error if tsconfig is missing", () => {
     return assert.rejects(() =>
       withFixtures({}, async () => {
         await clean(OPTIONS);
@@ -42,34 +42,34 @@ describe('clean', () => {
     );
   });
 
-  it('should gracefully error if tsconfig does not have valid outDir', () => {
-    return withFixtures({'tsconfig.json': JSON.stringify({})}, async () => {
+  it("should gracefully error if tsconfig does not have valid outDir", () => {
+    return withFixtures({ "tsconfig.json": JSON.stringify({}) }, async () => {
       const deleted = await clean(OPTIONS);
       assert.strictEqual(deleted, false);
     });
   });
 
-  it('should gracefully handle JSON with comments', () => {
+  it("should gracefully handle JSON with comments", () => {
     const invalidJson = `
     {
       // hah, comments in JSON, what a world
       compilerOptions: {outDir: '.'}
     }`;
-    return withFixtures({'tsconfig.json': invalidJson}, async () => {
+    return withFixtures({ "tsconfig.json": invalidJson }, async () => {
       await clean(OPTIONS);
     });
   });
 
-  it('should gracefully error if tsconfig has invalid JSON', () => {
+  it("should gracefully error if tsconfig has invalid JSON", () => {
     const invalidJson = "silly bear, this isn't JSON!";
-    return withFixtures({'tsconfig.json': invalidJson}, async () => {
+    return withFixtures({ "tsconfig.json": invalidJson }, async () => {
       await assert.rejects(clean(OPTIONS), /Unable to parse/);
     });
   });
 
-  it('should avoid deleting .', () => {
+  it("should avoid deleting .", () => {
     return withFixtures(
-      {'tsconfig.json': JSON.stringify({compilerOptions: {outDir: '.'}})},
+      { "tsconfig.json": JSON.stringify({ compilerOptions: { outDir: "." } }) },
       async () => {
         const deleted = await clean(OPTIONS);
         assert.strictEqual(deleted, false);
@@ -77,12 +77,12 @@ describe('clean', () => {
     );
   });
 
-  it('should ensure that outDir is local to targetRoot', () => {
+  it("should ensure that outDir is local to targetRoot", () => {
     return assert.rejects(() =>
       withFixtures(
         {
-          'tsconfig.json': JSON.stringify({
-            compilerOptions: {outDir: '../out'},
+          "tsconfig.json": JSON.stringify({
+            compilerOptions: { outDir: "../out" },
           }),
         },
         async () => {
@@ -93,14 +93,14 @@ describe('clean', () => {
     );
   });
 
-  it('should remove outDir', () => {
-    const OUT = 'outputDirectory';
+  it("should remove outDir", () => {
+    const OUT = "outputDirectory";
     return withFixtures(
       {
-        'tsconfig.json': JSON.stringify({compilerOptions: {outDir: OUT}}),
+        "tsconfig.json": JSON.stringify({ compilerOptions: { outDir: OUT } }),
         [OUT]: {},
       },
-      async dir => {
+      async (dir) => {
         const outputPath = path.join(dir, OUT);
         // make sure the output directory exists.
         fs.accessSync(outputPath);

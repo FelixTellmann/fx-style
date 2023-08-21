@@ -1,0 +1,93 @@
+// eslint-disable-next-line node/no-unpublished-require
+
+module.exports = {
+  extends: ["next", "eslint:recommended", "plugin:node/recommended", "prettier"],
+  overrides: [
+    {
+      extends: ["plugin:@typescript-eslint/recommended"],
+      files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+      },
+      rules: {
+        "@typescript-eslint/ban-ts-comment": 0,
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "off",
+          { argsIgnorePattern: "(^_|^e$)", varsIgnorePattern: "^_" },
+        ],
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-warning-comments": "off",
+        "max-len": [
+          2,
+          {
+            code: 100,
+            ignoreComments: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
+            ignoreUrls: true,
+          },
+        ],
+        "no-dupe-class-members": "off",
+        "no-empty-pattern": 0,
+        "no-unused-vars": "off",
+        "node/no-empty-function": "off",
+        "node/no-extraneous-import": 0,
+        "node/no-missing-import": "off",
+        "node/no-missing-require": "off",
+        "node/no-unpublished-import": 0,
+        "node/no-unsupported-features/es-syntax": "off",
+        "node/shebang": "off",
+        "object-curly-spacing": [2, "always", { arraysInObjects: true, objectsInObjects: true }],
+        "prefer-template": 1,
+        quotes: [2, "double", { allowTemplateLiterals: true, avoidEscape: true }],
+        "react/display-name": 0,
+        "react/jsx-curly-brace-presence": ["error", { children: "never", props: "never" }],
+        "react/jsx-one-expression-per-line": 0,
+        "react/jsx-sort-props": [
+          "error",
+          {
+            callbacksLast: true,
+            ignoreCase: true,
+            reservedFirst: ["key", "ref"],
+            shorthandFirst: true,
+          },
+        ],
+        "require-atomic-updates": "off",
+        "typescript-sort-keys/interface": [
+          "error",
+          "asc",
+          { caseSensitive: true, natural: true, requiredFirst: true },
+        ],
+        "typescript-sort-keys/string-enum": ["error", "asc", { caseSensitive: true }],
+      },
+    },
+  ],
+  plugins: ["node", /*"prettier",*/ "prettier-fx", /*"react-hooks",*/ "typescript-sort-keys"],
+  rules: {
+    "block-scoped-var": "error",
+    "eol-last": "error",
+    eqeqeq: "error",
+    "no-restricted-properties": [
+      "error",
+      { object: "describe", property: "only" },
+      { object: "it", property: "only" },
+    ],
+    "no-trailing-spaces": "error",
+    "no-var": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-const": "error",
+    /*"prettier/prettier": "error",*/
+    "prettier-fx/prettier": "error",
+    quotes: ["warn", "double", { avoidEscape: true }],
+  },
+};

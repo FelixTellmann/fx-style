@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as rimraf from 'rimraf';
-import {promisify} from 'util';
-import * as ncp from 'ncp';
-import * as writeFileAtomic from 'write-file-atomic';
-import * as JSON5 from 'json5';
+import * as fs from "fs";
+import * as path from "path";
+import * as rimraf from "rimraf";
+import { promisify } from "util";
+import * as ncp from "ncp";
+import * as writeFileAtomic from "write-file-atomic";
+import * as JSON5 from "json5";
 
 export const readFilep = promisify(fs.readFile);
 export const rimrafp = promisify(rimraf);
@@ -32,13 +32,13 @@ export interface Bag<T> {
 }
 
 export interface DefaultPackage extends Bag<string> {
+  "@types/node": string;
   gts: string;
   typescript: string;
-  '@types/node': string;
 }
 
 export async function readJsonp(jsonPath: string) {
-  const contents = await readFilep(jsonPath, {encoding: 'utf8'});
+  const contents = await readFilep(jsonPath, { encoding: "utf8" });
   return JSON5.parse(contents);
 }
 
@@ -76,7 +76,7 @@ async function getBase(
   }
   readFiles.add(filePath);
   try {
-    const json = await customReadFilep(filePath, 'utf8');
+    const json = await customReadFilep(filePath, "utf8");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let contents: any;
     try {
@@ -111,14 +111,10 @@ async function getBase(
  * @param inherited is then loaded and overwrites base
  */
 function combineTSConfig(base: ConfigFile, inherited: ConfigFile): ConfigFile {
-  const result: ConfigFile = {compilerOptions: {}};
+  const result: ConfigFile = { compilerOptions: {} };
 
   Object.assign(result, base, inherited);
-  Object.assign(
-    result.compilerOptions!,
-    base.compilerOptions!,
-    inherited.compilerOptions!
-  );
+  Object.assign(result.compilerOptions!, base.compilerOptions!, inherited.compilerOptions!);
   delete result.extends;
   return result;
 }
@@ -127,11 +123,11 @@ function combineTSConfig(base: ConfigFile, inherited: ConfigFile): ConfigFile {
  * An interface containing the top level data fields present in Config Files
  */
 export interface ConfigFile {
-  files?: string[];
   compilerOptions?: {};
-  include?: string[];
   exclude?: string[];
   extends?: string[];
+  files?: string[];
+  include?: string[];
 }
 
 /**
@@ -140,16 +136,14 @@ export interface ConfigFile {
  * - If only package-lock.json or both exist, use npm
  */
 export function isYarnUsed(existsSync = fs.existsSync): boolean {
-  if (existsSync('package-lock.json')) {
+  if (existsSync("package-lock.json")) {
     return false;
   }
-  return existsSync('yarn.lock');
+  return existsSync("yarn.lock");
 }
 
 export function getPkgManagerCommand(isYarnUsed?: boolean): string {
-  return (
-    (isYarnUsed ? 'yarn' : 'npm') + (process.platform === 'win32' ? '.cmd' : '')
-  );
+  return (isYarnUsed ? "yarn" : "npm") + (process.platform === "win32" ? ".cmd" : "");
 }
 
 /**
@@ -165,5 +159,5 @@ export async function getTSConfig(
 ): Promise<ConfigFile> {
   customReadFilep = (customReadFilep || readFilep) as ReadFileP;
   const readArr = new Set<string>();
-  return getBase('tsconfig.json', customReadFilep, readArr, rootDir);
+  return getBase("tsconfig.json", customReadFilep, readArr, rootDir);
 }
