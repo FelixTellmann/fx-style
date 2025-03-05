@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
-import * as cfg from "../.eslintrc.json";
+// @ts-ignore
+import * as cfg from "../.eslintrc.js";
 module.exports = cfg;
